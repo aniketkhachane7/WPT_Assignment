@@ -1,0 +1,236 @@
+<html>
+
+<head>
+	<script>
+
+		window.addEventListener('DOMContentLoaded', () => {
+
+			let employees = [{ empno: 1, empname: "Amit", email: "a1@12", deptid: 1 },
+			{ empno: 2, empname: "aniket", email: "a25@152", deptid: 2 },
+			{ empno: 3, empname: "vipul", email: "a53@152", deptid: 3 },
+			{ empno: 4, empname: "soham", email: "a45@12", deptid: 1 }];
+
+
+			const numberid = document.querySelector("#empno");
+			numberid.addEventListener('blur', () => {
+				console.log("blur event work okkk ");
+				let input = document.querySelector("#empno").value;
+				console.log("Input is " + input);
+		
+				let output = getempDetailsLogic(input);
+				if (output) {
+					document.querySelector("#empname").value = output.empname;
+					document.querySelector("#email").value = output.email;
+					document.querySelector("#deptid").value = output.deptid;
+
+					document.querySelector("#modify").disabled = false;
+					 document.querySelector("#remove").disabled = false;
+					document.querySelector("#msg").innerText = "item details found";
+
+				}
+				else {
+					document.querySelector("#add").disabled = false;
+					document.querySelector("#msg").innerText = "item details not found";
+			
+					document.querySelector("#empname").value = "";
+					document.querySelector("#email").value = "";
+					document.querySelector("#deptid").value = "";
+
+				}
+
+			});
+
+
+
+// ------------------add element event------------------------------
+			const addid = document.querySelector("#add");
+			addid.addEventListener('click', () => {
+				let input = document.querySelector("#empno").value;
+				//let output= false;
+				let output = getempDetailsLogic(input);
+
+
+				if (!output) {
+					// output.employees.push.empno(parseInt(document.querySelector("#empno").value));
+					document.querySelector("#msg").innerText = "Added";
+					employees.push({
+						empno: document.querySelector("#empno").value,
+						empname: document.querySelector("#empname").value,
+						email: document.querySelector("#email").value,
+						deptid: document.querySelector("#deptid").value
+					});
+					
+					document.querySelector("#modify").disabled = true;
+					 document.querySelector("#remove").disabled = true;
+					
+					viewallempdetailslogic();
+				}
+
+			
+			});
+
+
+// ------------------modify element event------------------------------
+			const modifyid = document.querySelector("#modify");
+			modifyid.addEventListener('click', () => {
+				let input = document.querySelector("#empno").value;
+				let output = getempDetailsLogic(input);
+				//let newempno = prompt("Enter new empno");
+				if (output) {
+					output.empname = document.querySelector("#empname").value;
+					output.email = document.querySelector("#email").value;
+					output.deptid = document.querySelector("#deptid").value;
+					document.querySelector("#msg1").innerText = "Modified"
+
+
+					
+					document.querySelector("#empno").value = "";
+					document.querySelector("#empname").value = "";
+					document.querySelector("#email").value = "";
+					document.querySelector("#deptid").value = "";
+					console.log("Edit sucessfull");
+					document.querySelector("#modify").disabled = false;
+					document.querySelector("#msg").innerText = "Modifed Sucessfully";
+					viewallempdetailslogic();
+					
+					
+
+				}
+				else {
+					console.log("empno not found");
+				}
+			});
+
+
+
+// ------------------remove element event------------------------------
+			const removeid = document.querySelector("#remove");
+			removeid.addEventListener('click', () => {
+				let input = document.querySelector("#empno").value;
+				
+				
+				for(let i=0; i<employees.length; i++){
+                    if(employees[i].empno == input){
+					console.log("ENtered iffff block");
+                        employees.splice(i,1);
+                        break;
+                    }
+                }
+				document.querySelector('#msg').innerText = "Employee Deleted";
+                document.querySelector('#add').disabled = false;
+                document.querySelector('#modify').disabled = true;
+                document.querySelector('#remove').disabled = true;
+                document.querySelector('#viewall').disabled = false;
+                document.querySelector('#veiwondeptid').disabled = false;
+                document.querySelector('#empname').value = "";
+                document.querySelector('#email').value = "";
+                document.querySelector('#deptid').value = "";
+				
+           viewallempdetailslogic();
+				
+				
+				
+			});
+
+// ------------------viewallempdetailslogic event------------------------------
+			const viewallid = document.querySelector("#viewall");
+			viewallid.addEventListener('click', () => {
+				
+				viewallempdetailslogic();
+			});
+
+// ------------------veiwondeptid1 event------------------------------
+			const veiwondeptid1 = document.querySelector("#veiwondeptid");
+			veiwondeptid1.addEventListener('click', () => {
+				let input = document.querySelector("#deptid").value;
+				console.log("input value " + input);
+				if (input == "") {
+					document.querySelector("#msg").innerText = "dept id not founde"
+
+				}
+				else
+					// console.log("else on id working ");
+					document.querySelector("#msg1").innerHTML = getonDeptidLogic(input);
+
+
+			});
+
+
+// ------------------getempDetailsLogic function------------------------------
+			function getempDetailsLogic(empno) {
+				// let output = { result: false,  null };
+				let result = false;
+				let output = null;
+				// empdetails =employees;
+				let i = 0;
+				for (i = 0; i < employees.length; i++) {
+					if (employees[i].empno == empno) {
+						result = true;
+						output = employees[i];
+						break;
+					}
+				}
+
+				return output;
+			}
+
+			// ------------------ViewonDeptid function------------------------------
+			function getonDeptidLogic(deptid) {
+				
+				let i = 0;
+				let msg = "";
+				for (i = 0; i < employees.length; i++) {
+					if (employees[i].deptid == deptid) {
+
+						msg += "<Br/>" + employees[i].empno + " --- " + employees[i].empname +
+							"--" + employees[i].email + "--" + employees[i].deptid;
+
+						
+					}
+
+				}
+				return msg;
+			}
+
+
+
+
+			function viewallempdetailslogic() {
+				let msg = "";
+				let empdetails = employees;
+				console.log("empdetails" + empdetails);
+				for (let i = 0; i < employees.length; i++)
+					msg += "<Br/>" + employees[i].empno + " --- " + employees[i].empname +
+						"--" + employees[i].email + "--" + employees[i].deptid;
+
+				document.querySelector("#msg1").innerHTML = msg;
+				//	return output;
+
+			}
+
+
+
+		});
+
+
+	</script>
+</head>
+
+<body>
+	<input type="text" id="empno" placeholder="empno" /><span id="msg"> message1 </span>
+	<Br /><input type="text" id="empname" placeholder="empname" />
+	<Br /><input type="text" id="email" placeholder="email" />
+	<Br /><input type="text" id="deptid" placeholder="deptid" />
+	<Br /><input type="button" disabled id="add" value="add" />
+	<input type="button" disabled id="modify" value="modify" />
+	<input type="button" disabled id="remove" value="remove" />
+	<input type="button" id="viewall" value="viewall" />
+	<input type="button" id="veiwondeptid" value="veiwondeptid" />
+	<Br /><span id="msg1"> message2 </span>
+
+</body>
+
+
+
+
+</html>

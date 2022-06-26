@@ -1,0 +1,199 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Assignment 1</title>
+
+    <script>
+
+        window.addEventListener("DOMContentLoaded", (event) => {
+            // blur
+            let num = document.querySelector("#num");
+            num.addEventListener('blur', () => {
+
+                console.log("blur event work okkkk ");
+
+                //    const arr = [10, 20, 30, 40, 50];
+                let output = getArray(document.querySelector("#num").value);
+                
+                console.log(output.result);
+
+                if (output.result) {
+
+                    document.querySelector("#edit").disabled = false;
+                    document.querySelector("#delete").disabled = false;
+                    document.querySelector("#add").disabled = true;
+                    document.querySelector("#view").disabled = true;
+                    document.querySelector("#show").disabled = true;
+                }
+
+                else {
+                    document.querySelector("#add").disabled = false;
+                    document.querySelector("#edit").disabled = true;
+                    document.querySelector("#delete").disabled = true;
+                    document.querySelector("#view").disabled = true;
+                    document.querySelector("#show").disabled = true;
+                }
+
+            });
+            //------------------------------------------------------------------------------------------------------
+
+            // add
+            let addNum = document.querySelector("#add");
+            addNum.addEventListener('click', () => {
+                console.log("add");
+
+                // const arr = [10, 20, 30, 40, 50];
+                let output = getArray(document.querySelector("#num").value);
+               
+                console.log(output.result);
+
+                if (!output.result) {
+                    output.arr.push(parseInt(document.querySelector("#num").value));
+                    console.log(output.arr);
+                    document.querySelector("#add").disabled = true;
+                }
+
+            });
+
+            //----------------------------------------------------------------------------------------------------------------
+            //edit the number
+
+            let edit = document.querySelector("#edit");
+            edit.addEventListener('click', () => {
+                let input = document.querySelector("#num").value;
+         
+
+                let i;
+          
+
+                let output = getArray(document.querySelector("#num").value);
+                let newnum = prompt("Enter new number");
+                if (output.result) {
+                    console.log("Edit sucessfull");
+                    document.querySelector("#edit").disabled = false;
+                    document.querySelector("#msg").innerText = "Edit Sucessful";
+                    console.log(i);
+                    output.arr[i] = parseInt(newnum);
+                    console.log("new number: " + newnum);
+                    console.log(output.arr);
+                }
+                else {
+                    console.log("Number Notfound can't edit");
+                }
+
+            });
+            //--------------------------------------------------------------------------------------------------------------------
+
+            //delete
+            let deleteNum = document.querySelector("#delete");
+            deleteNum.addEventListener('click', () => {
+                console.log("delete number");
+
+
+                const arr = [10, 20, 30, 40, 50];
+                for (let i = 0; i < arr.length; i++) {
+                    if (arr[i] == document.querySelector("#num").value) {
+                        arr.splice(i, 1);
+                        break;
+                    }
+                }
+                console.log(arr);
+
+                document.querySelector("#edit").disabled = true;
+                document.querySelector("#delete").disabled = true;
+                document.querySelector("#add").disabled = true;
+            });
+
+
+
+            //--------------------------------------------------------------------------------------------------------------------------
+
+            // view all   
+            let view = document.querySelector("#view");
+            view.addEventListener('click', () => {
+                //  const arr = [10, 20, 30, 40, 50];
+                let output = getArray1();
+                let arr3 = [];
+                for (let i = 0; i < output.arr2.length; i++) {
+                
+                    console.log("somuie");
+                    arr3.push(output.arr2[i]);
+                    console.log(output.arr2[i]);
+                }
+
+                document.querySelector("#msg1").innerText = output.arr3;
+
+            });
+
+            //---------------------------------------------------------------------------------------------------------------------
+            // view odd position index
+            let show = document.querySelector("#show");
+            show.addEventListener('click', () => {
+                const arr = [10, 20, 30, 40, 50];
+
+                let arr1 = [];
+                for (let i = 0; i < arr.length; i++) {
+                    if (i == 0 || i % 2 != 0) {
+
+                        arr1.push(arr[i]);
+                        // document.querySelector("#msg1").innerHTML= arr[i];
+                        console.log(arr[i]);
+
+                    }
+                } document.querySelector("#msg1").innerHTML = arr1;
+
+            });
+
+
+            let arr = [10, 20, 30, 40, 50, 60, 70, 80, 90, 100];
+
+            function getArray(num) {
+
+
+                let output = { result: false, arr: [] };
+                for (let i = 0; i < arr.length; i++) {
+                    if (arr[i] == num) {
+                        console.log("found");
+                        output.result = true;
+                        output.arr2 = arr[i];
+                        break;
+                    }
+                } return output;
+            }
+
+            function getArray1() {
+
+
+                let output = {arr2: []} ;
+                for (let i = 0; i < arr.length; i++) {
+                    console.log("found");
+                    
+                    output.arr2 = arr[i];
+
+                } return output.arr2;
+
+            }
+        });
+
+
+
+    </script>
+</head>
+
+<body>
+    <input type="number" id="num" placeholder="Enter the number" />
+    <span id="msg">message appear here</span></br><br>
+    <input type="button" id="add" value="Add the number" /><br>
+    <input type="button" id="edit" value="Edit the number" disabled /><br>
+    <input type="button" id="delete" value="Delete the number" disabled /></br>
+    <input type="button" id="view" value="View All" /><br>
+    <input type="button" id="show" value="Show odd position" />
+    </br>
+    <span id="msg1">message 2 appear here</span></br>
+</body>
+
+</html>
