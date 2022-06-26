@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <script src="https://code.jquery.com/jquery-3.6.0.js"></script>
+
+    <script>
+
+        $(() => {
+            console.log("page load");
+
+            $("#empno").blur(() => {
+                console.log("blur event ");
+
+                let input = { empno: $("#empno").val() };
+
+
+                let parameterstothefunction = {
+                    data: input,
+                    url: "http://localhost:9000/emp",
+                    type: 'get',
+                    dataType: "json",
+                    success: (datagivenbyserver) => {
+                        console.log("data given by server in success" + datagivenbyserver.status)
+                        if (datagivenbyserver.status === true) {
+                            $("#message").text(" emono found");
+
+                            $("#empno").val(datagivenbyserver.emp.empno); //makeup
+                            $("#empname").val(datagivenbyserver.emp.empname);
+                            $("#sal").val(datagivenbyserver.emp.sal);
+
+                        }
+                        else {
+                            $("#message").text(" emono not found");
+
+                            $("#empname").val("");
+                            $("#sal").val("");
+                        }
+                    },
+                    error: (errorgivenbyserver) => { console.log("failed to contact server " + errorgivenbyserver) }
+                };
+                $.ajax(parameterstothefunction);
+
+
+
+
+            });
+
+
+            $("#add").click(() => {
+                console.log(" click event work ");
+
+
+                const input1 = { empno1: $("#empno").val(), empname1: $("#empname").val(), sal1: $("#sal").val() };
+
+                let parameterstothefunction = {
+                    data: input1,
+                    url: "http://localhost:9000/Addemp",
+                    type: 'get',
+                    dataType: "json",
+                    success: (datagivenbyserver) => {
+
+                        if (datagivenbyserver.status === true) {
+                            $("#message").text("Add Emp Details Done ");
+                            $("#empno").val("");
+                            $("#empname").val("");
+                            $("#sal").val("");
+
+                            $('#update').prop('disabled', true);
+
+                        }
+                        else {
+                            $("#message").text(" Employee Details Not Added");
+                            $("#empno").val("");
+                            $("#empname").val("");
+                            $("#sal").val("");
+                            $('#add').prop('disabled', true);
+                            $('#update').prop('disabled', true);
+                        }
+                    },
+                    error: (errorgivenbyserver) => {
+
+                        console.log("Error Occurs : " + error);
+                    }
+
+                };
+
+                $.ajax(parameterstothefunction);
+
+
+            });
+
+            // ******************* update *******************************
+
+            $("#update").click(() => {
+
+                console.log(" click event work ");
+
+                let input2 = { empno2: $("#empno").val(), empname2: $("#empname").val(), sal2: $("#sal").val() };
+
+
+                let parameterstothefunction = {
+                    data: input2,
+                    url: "http://localhost:9000/empupdate",
+                    type: 'get',
+                    dataType: "json",
+                    success: (datagivenbyserver) => {
+                        console.log(" data by server : " + datagivenbyserver.status);
+
+                        if (datagivenbyserver.status === true) {
+
+                            $("#message").text("update done ");
+                        }
+                        else {
+                            $("#message").text("update  not done ");
+                        }
+
+
+                    },
+                    error: (errorgivenbyserver) => {
+                        console.log("failed to connect server : " + errorgivenbyserver)
+
+                    }
+
+
+                };
+                $.ajax(parameterstothefunction);
+
+            });
+
+
+        });
+    </script>
+
+</head>
+
+<body>
+
+    <input id="empno" type="text" placeholder="Employee no" />
+    <span id="message">kay Kartoy</span><br>
+    <input id="empname" type="text" placeholder="Employee name" /><br>
+    <input id="sal" type="text" placeholder="Employee sal" /><br>
+
+    <input id="add" type="button" value="Add employee" />
+    <input id="update" type="button" value="update employee" />
+    <br>
+    <hr>
+    <span id="content">Emplyee Details</span>
+</body>
+
+</html>
